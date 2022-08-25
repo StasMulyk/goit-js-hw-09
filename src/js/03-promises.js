@@ -5,7 +5,7 @@ const formBlock = document.querySelector('.form');
 function createPromise(position, delay) {
   const shouldResolve = Math.random() > 0.3;
 
-  new Promise((resolve, reject) => {
+ return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (shouldResolve) {
         // Fulfill
@@ -16,12 +16,7 @@ function createPromise(position, delay) {
       }
     }, delay);
   })
-    .then(({ position, delay }) => {
-      Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
-    })
-    .catch(({ position, delay }) => {
-      Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
-    });
+    
 }
 
 const onCreatePromises = e => {
@@ -37,7 +32,13 @@ const onCreatePromises = e => {
   // const delayStep = Number(e.currentTarget.delay.value);
 
   for (let i = 1; i <= promisesAmount; i += 1) {
-    createPromise(i, firstDelay);
+    createPromise(i, firstDelay)
+      .then(({ position, delay }) => {
+      Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
+    })
+    .catch(({ position, delay }) => {
+      Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
+    });
     firstDelay += delayStep;
   }
 };
